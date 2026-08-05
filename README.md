@@ -1,16 +1,43 @@
-# React + Vite
+# Netraform Technologies Website
 
-This template provides a minimal setup to get React working in Vite with HMR and some Oxlint rules
+Official website for **Netraform Technologies** — Building Africa's Future Through AI & Innovation.
 
-Currently, two official plugins are available:
+Built with **Next.js 15 (App Router)**, **TypeScript**, **Tailwind CSS**, and **Framer Motion**.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+## 🚀 Quick Start
 
-## React Compiler
+### Prerequisites
+- Node.js 18.x or higher
+- npm, pnpm, or yarn
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+### Installation & Development
 
-## Expanding the Oxlint configuration
+```bash
+# Install dependencies
+npm install
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and Oxlint's TypeScript related rules in your project.
+# Run dev server
+npm run dev
+
+# Type check
+npm run type-check
+
+# Production build
+npm run build
+```
+
+Open [http://localhost:3000](http://localhost:3000) to view the application in your browser.
+
+## 📁 Architecture & Routes
+
+- `/` — Homepage (Hero, What We Do, Featured Projects, Innovation Highlights, Testimonials, CTA)
+- `/about` — About Netraform, Mission, Vision, and Principles
+- `/services` — AI, Software Engineering, Robotics, and Cloud Infrastructure Services & Products
+- `/innovation-hub` — Incubator, Fellowships, Hackathons, and Programs
+- `/research` — Applied Research Papers, Open Source Projects, and Case Studies
+- `/blog` — Tech Articles, Engineering Updates, and News
+- `/careers` — Join the Netraform Team
+- `/contact` — Contact Form & Support
+- `/faq` — Frequently Asked Questions
+
+For modification guidelines and structure details, see [MODIFICATION_GUIDE.md](file:///wsl.localhost/Ubuntu-24.04/home/ai-dikko/Workspace/01_Production/Active_Projects/netraform-website/MODIFICATION_GUIDE.md).

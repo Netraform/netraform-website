@@ -1,128 +1,61 @@
 # Netraform Technologies — Modification Guide
 
-This project is a React (Vite) + Tailwind CSS site. Everything is organised so you can
-change one thing without hunting through the whole codebase.
+This project is a Next.js (App Router) + TypeScript + Tailwind CSS site. Everything is organized cleanly across routes, components, and design tokens.
 
 ## 1. Getting it running
 
 ```bash
-cd netraform
 npm install
-npm run dev        # local dev server, usually http://localhost:5173
-npm run build      # production build → dist/
-npm run preview    # preview the production build locally
+npm run dev        # Local dev server (http://localhost:3000)
+npm run build      # Production Next.js build
+npm run start      # Start production server locally
+npm run type-check # Run TypeScript type checking
 ```
 
 ## 2. Where things live
 
 ```
-src/
-  data/content.js         ← ALL text content: nav links, services, programs,
-                             projects, testimonials, blog posts, stats, FAQs
-  components/
-    Navbar.jsx             ← top navigation
-    Footer.jsx              ← footer
-    LoadingScreen.jsx       ← initial page-load screen
-    ui/                     ← reusable building blocks (Button, Accordion,
-                              Counter, PageHeader, SectionHeading, Reveal,
-                              NetworkPattern)
-    sections/                ← one file per homepage section (Hero,
-                              WhatWeDo, ProgramsSection, etc.) — these are
-                              reused across inner pages too
-  pages/                    ← one file per route (Home, About, Services,
-                              Programs, Projects, Community, Blog, Contact,
-                              FAQ, NotFound)
-  App.jsx                    ← routing table — add new pages here
-tailwind.config.js           ← colour palette, fonts, shadows, spacing tokens
-index.html                   ← page title, SEO meta tags, Google Fonts
+app/                       ← Next.js App Router routes & pages
+  layout.tsx               ← Root layout (Navbar, Footer, Fonts, Global Meta/SEO)
+  globals.css              ← Tailwind directives & global styles
+  page.tsx                 ← Homepage route (/)
+  about/page.tsx           ← About page (/about)
+  services/page.tsx        ← Services & Products (/services)
+  innovation-hub/page.tsx  ← Innovation Hub (/innovation-hub)
+  research/page.tsx        ← Research & Projects (/research)
+  blog/page.tsx            ← Blog page (/blog)
+  careers/page.tsx         ← Careers page (/careers)
+  contact/page.tsx         ← Contact & FAQ (/contact)
+  faq/page.tsx             ← FAQ page (/faq)
+components/
+  Navbar.tsx               ← Navigation header with dark mode toggle
+  Footer.tsx               ← Global footer & newsletter signup
+  sections/                ← Section components (Hero, WhatWeDo, FeaturedProjects, etc.)
+  ui/                      ← Reusable UI elements (Button, Accordion, Counter, SectionHeading, etc.)
+lib/                       ← Utility functions (utils.ts)
+public/                    ← Static assets (logo NT.png, favicon, icons)
+tailwind.config.js         ← Custom color palette, fonts, keyframes, and tokens
 ```
-
-**Rule of thumb:** if you're changing *words*, go to `src/data/content.js`.
-If you're changing *layout or design*, go to the matching component in
-`src/components/sections/` or `src/components/ui/`.
 
 ## 3. Common changes
 
-### Change any text (headline, service description, testimonial, etc.)
-Open `src/data/content.js`. Every array (`services`, `programs`, `projects`,
-`testimonials`, `blogPosts`, `stats`, `faqs`, `whyReasons`, `partners`) maps
-directly to a section on the site. Edit the object, save — it updates
-everywhere that array is used.
+### Edit page copy or section content
+- Page-level content lives in `app/[route]/page.tsx`.
+- Reusable section designs live in `components/sections/` (e.g. `Hero.tsx`, `WhatWeDo.tsx`, `FeaturedProjects.tsx`, `BlogPreview.tsx`).
 
-Hero headline/subheading and other one-off page copy live directly inside
-the relevant component (e.g. `src/components/sections/Hero.jsx`) since
-they're not repeated elsewhere.
+### Change brand colors
+Open `tailwind.config.js` → `theme.extend.colors`. Update the color tokens (`electric-blue`, `deep-blue`, `slate`, etc.).
 
-### Add or remove a service / program / project card
-In `src/data/content.js`, add or delete an entry from the relevant array
-(`services`, `programs`, `projects`). The grid re-flows automatically —
-no layout code to touch.
+### Add a new page / route
+Create a new directory in `app/` with a `page.tsx` file (e.g., `app/team/page.tsx`). Add the route link to `navigation` in `components/Navbar.tsx` and `components/Footer.tsx`.
 
-### Change colours
-Open `tailwind.config.js` → `theme.extend.colors`. The five brand colours
-are named `primary`, `navy`, `surface`, `muted`, `accent`. Change the hex
-value once here and it updates across the entire site, since every
-component uses these names (`bg-primary`, `text-navy`, etc.) instead of
-raw hex codes.
+### Static Assets & Images
+Place image assets in the `public/` directory and access them directly from `/` (e.g., `/NT.png`).
 
-### Change fonts
-Open `tailwind.config.js` → `theme.extend.fontFamily`, and update the
-Google Fonts `<link>` in `index.html` to match. `font-display` is used for
-all headings, `font-body` for paragraph text.
+## 4. Building & Deploying
 
-### Add a new page
-1. Create `src/pages/YourPage.jsx` (copy an existing simple page like
-   `Projects.jsx` as a starting template).
-2. Import it in `src/App.jsx` and add a `<Route path="/your-path" element={<YourPage />} />`.
-3. Add it to the `nav` array in `src/data/content.js` if it should appear
-   in the navbar/footer.
-
-### Replace an image placeholder
-Every image spot is currently a labelled grey box with a comment above it
-specifying aspect ratio, style, and a suggested AI-image prompt (search
-"Image slot" in the codebase to find them all). To replace one:
-```jsx
-// before
-<div className="aspect-square rounded-xl2 bg-surface ...">[ About image ]</div>
-
-// after
-<img src="/images/about-team.jpg" alt="Netraform engineers collaborating"
-     className="aspect-square rounded-xl2 object-cover w-full" />
-```
-Place real image files in the `public/` folder (e.g. `public/images/`) and
-reference them with a leading `/`.
-
-### Adjust spacing between sections
-Sections use `py-24` (homepage/inner sections) or `py-20` (stats band) for
-vertical padding — change the Tailwind spacing class directly on the
-`<section>` tag if you want tighter or looser rhythm.
-
-### Turn off / tone down animations
-Section reveal-on-scroll is handled by `src/components/ui/Reveal.jsx`
-(fade-up via Framer Motion). To disable site-wide, make it render
-`children` directly without the motion wrapper. The stat counters live in
-`src/components/ui/Counter.jsx`.
-
-## 4. Inner pages not yet fully fleshed out
-
-`About`, `Services`, `InnovationHub`, `Programs`, `Projects`, `Community`,
-`Blog`, `Contact`, and `FAQ` are all built and routed, composed from the
-same section components as the homepage plus a `PageHeader`. If you want a
-page to feel more distinct from the homepage (e.g. a longer About page with
-a team grid, or a Blog page with real article pages), add new section
-components in `src/components/sections/` following the same pattern as the
-existing ones, then drop them into the relevant page file.
-
-## 5. Deploying
-
-This is a static site after `npm run build` (output in `dist/`). Deploy the
-same way you deployed 9jaLinks' frontend — Vercel is the simplest option:
+This Next.js application can be deployed directly to Vercel or any Node.js hosting platform:
 ```bash
-npm install -g vercel
-vercel --prod
+npm run build
 ```
-Because this uses React Router with clean URLs (`/about`, `/contact`, etc.),
-add a `vercel.json` rewrite so refreshing an inner page doesn't 404:
-```json
-{ "rewrites": [{ "source": "/(.*)", "destination": "/index.html" }] }
-```
+Vercel automatically detects Next.js App Router configuration and handles serverless deployment seamlessly.
