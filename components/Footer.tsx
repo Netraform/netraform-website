@@ -1,10 +1,11 @@
 'use client';
 
-import React from 'react';
+import React, { useState } from 'react';
 import Link from 'next/link';
 import { motion } from 'framer-motion';
 import { HiArrowRight } from 'react-icons/hi2';
 import { FiGithub, FiLinkedin, FiTwitter, FiMail } from 'react-icons/fi';
+import { FaWhatsapp } from 'react-icons/fa';
 
 const footerLinks = {
   company: [
@@ -37,10 +38,44 @@ const socialLinks = [
   { icon: FiGithub, href: 'https://github.com', label: 'GitHub' },
   { icon: FiLinkedin, href: 'https://linkedin.com', label: 'LinkedIn' },
   { icon: FiTwitter, href: 'https://twitter.com', label: 'Twitter' },
+  { icon: FaWhatsapp, href: 'https://wa.me/2349063199108', label: 'WhatsApp' },
   { icon: FiMail, href: 'mailto:contact@netraform.tech', label: 'Email' },
 ];
 
 export default function Footer() {
+  const [email, setEmail] = useState('');
+  const [status, setStatus] = useState<'idle' | 'loading' | 'success' | 'error'>('idle');
+  const [errorMessage, setErrorMessage] = useState('');
+  const [showToast, setShowToast] = useState(false);
+
+  const handleSubscribe = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    setStatus('loading');
+    setErrorMessage('');
+
+    try {
+      const res = await fetch('/api/subscribe', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email }),
+      });
+
+      const data = await res.json();
+
+      if (!res.ok) {
+        throw new Error(data.error || 'Failed to subscribe.');
+      }
+
+      setStatus('success');
+      setEmail('');
+      setShowToast(true);
+      setTimeout(() => setShowToast(false), 4000);
+    } catch (err) {
+      setStatus('error');
+      setErrorMessage(err instanceof Error ? err.message : 'Something went wrong.');
+    }
+  };
+
   const containerVariants = {
     hidden: { opacity: 0 },
     visible: {
@@ -77,27 +112,33 @@ export default function Footer() {
             </p>
           </motion.div>
 
-          <motion.form
-            className="flex gap-2 max-w-md items-start"
-            variants={itemVariants}
-            onSubmit={(e) => {
-              e.preventDefault();
-            }}
-          >
-            <input
-              type="email"
-              placeholder="Enter your email address"
-              required
-              className="flex-1 px-4 py-3 rounded-lg border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-900 dark:text-slate-100 placeholder-slate-500 dark:placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-electric-blue-500 text-sm"
-            />
-            <button
-              type="submit"
-              className="px-6 py-3 bg-deep-blue-600 hover:bg-deep-blue-700 text-white rounded-lg font-semibold transition-colors flex items-center gap-2 text-sm"
-            >
-              <span>Subscribe</span>
-              <HiArrowRight className="w-4 h-4" />
-            </button>
-          </motion.form>
+          <motion.div variants={itemVariants} className="max-w-md">
+            <form className="flex gap-2 items-start" onSubmit={handleSubscribe}>
+              <div className="flex-1">
+                <input
+                  type="email"
+                  placeholder="Enter your email address"
+                  required
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  className="w-full px-4 py-3 rounded-lg border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-900 dark:text-slate-100 placeholder-slate-500 dark:placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-electric-blue-500 text-sm"
+                />
+                {status === 'error' && (
+                  <p className="mt-2 text-xs font-semibold text-red-600 dark:text-red-400">
+                    {errorMessage}
+                  </p>
+                )}
+              </div>
+              <button
+                type="submit"
+                disabled={status === 'loading'}
+                className="px-6 py-3 bg-deep-blue-600 hover:bg-deep-blue-700 disabled:opacity-60 disabled:cursor-not-allowed text-white rounded-lg font-semibold transition-colors flex items-center gap-2 text-sm shrink-0"
+              >
+                <span>{status === 'loading' ? 'Subscribing...' : 'Subscribe'}</span>
+                {status !== 'loading' && <HiArrowRight className="w-4 h-4" />}
+              </button>
+            </form>
+          </motion.div>
         </motion.div>
 
         {/* Links Grid */}
@@ -176,6 +217,18 @@ export default function Footer() {
           </motion.div>
         </motion.div>
       </div>
+
+      {/* Subscribe Success Toast */}
+      {showToast && (
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          exit={{ opacity: 0, y: 20 }}
+          className="fixed bottom-6 left-1/2 -translate-x-1/2 z-50 px-6 py-3 rounded-lg bg-slate-900 dark:bg-white text-white dark:text-slate-900 text-sm font-semibold shadow-lg"
+        >
+          You&apos;re subscribed!
+        </motion.div>
+      )}
     </footer>
   );
 }

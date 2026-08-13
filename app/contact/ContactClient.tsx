@@ -1,5 +1,6 @@
 'use client';
 
+import { useState } from 'react';
 import { motion } from 'framer-motion';
 import { FiMail, FiMapPin, FiPhone } from 'react-icons/fi';
 
@@ -16,7 +17,52 @@ const itemVariants = {
   visible: { opacity: 1, y: 0, transition: { duration: 0.5 } },
 };
 
+const initialFormState = {
+  firstName: '',
+  lastName: '',
+  email: '',
+  subject: '',
+  message: '',
+};
+
 export default function ContactClient() {
+  const [formData, setFormData] = useState(initialFormState);
+  const [status, setStatus] = useState('idle'); // idle | loading | success | error
+  const [errorMessage, setErrorMessage] = useState('');
+
+  const handleChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+  ) => {
+    const { name, value } = e.target;
+    setFormData((prev) => ({ ...prev, [name]: value }));
+  };
+
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    setStatus('loading');
+    setErrorMessage('');
+
+    try {
+      const res = await fetch('/api/contact', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(formData),
+      });
+
+      const data = await res.json();
+
+      if (!res.ok) {
+        throw new Error(data.error || 'Failed to send message.');
+      }
+
+      setStatus('success');
+      setFormData(initialFormState);
+    } catch (err) {
+      setStatus('error');
+      setErrorMessage(err instanceof Error ? err.message : 'Something went wrong.');
+    }
+  };
+
   return (
     <div className="w-full">
       {/* Hero */}
@@ -105,75 +151,112 @@ export default function ContactClient() {
               <h2 className="text-3xl font-bold text-slate-900 dark:text-white mb-8">
                 Send us a Message
               </h2>
-              <form className="space-y-6">
-                <div className="grid md:grid-cols-2 gap-6">
+
+              {status === 'success' ? (
+                <div className="p-6 rounded-lg bg-green-50 dark:bg-green-900/20 border border-green-200 dark:border-green-800 text-center">
+                  <p className="text-lg font-semibold text-green-700 dark:text-green-400">
+                    Message sent! We&apos;ll get back to you within 24 hours.
+                  </p>
+                  <button
+                    onClick={() => setStatus('idle')}
+                    className="mt-4 text-sm font-semibold text-electric-blue-600 dark:text-electric-blue-400 underline"
+                  >
+                    Send another message
+                  </button>
+                </div>
+              ) : (
+                <form className="space-y-6" onSubmit={handleSubmit}>
+                  <div className="grid md:grid-cols-2 gap-6">
+                    <div>
+                      <label className="block text-sm font-semibold text-slate-900 dark:text-white mb-2">
+                        First Name
+                      </label>
+                      <input
+                        type="text"
+                        name="firstName"
+                        required
+                        value={formData.firstName}
+                        onChange={handleChange}
+                        className="w-full px-4 py-3 rounded-lg border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 text-slate-900 dark:text-white placeholder-slate-500 dark:placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-electric-blue-500"
+                        placeholder="John"
+                      />
+                    </div>
+                    <div>
+                      <label className="block text-sm font-semibold text-slate-900 dark:text-white mb-2">
+                        Last Name
+                      </label>
+                      <input
+                        type="text"
+                        name="lastName"
+                        required
+                        value={formData.lastName}
+                        onChange={handleChange}
+                        className="w-full px-4 py-3 rounded-lg border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 text-slate-900 dark:text-white placeholder-slate-500 dark:placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-electric-blue-500"
+                        placeholder="Ado"
+                      />
+                    </div>
+                  </div>
+
                   <div>
                     <label className="block text-sm font-semibold text-slate-900 dark:text-white mb-2">
-                      First Name
+                      Email
+                    </label>
+                    <input
+                      type="email"
+                      name="email"
+                      required
+                      value={formData.email}
+                      onChange={handleChange}
+                      className="w-full px-4 py-3 rounded-lg border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 text-slate-900 dark:text-white placeholder-slate-500 dark:placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-electric-blue-500"
+                      placeholder="ibrahim@example.com"
+                    />
+                  </div>
+
+                  <div>
+                    <label className="block text-sm font-semibold text-slate-900 dark:text-white mb-2">
+                      Subject
                     </label>
                     <input
                       type="text"
+                      name="subject"
                       required
+                      value={formData.subject}
+                      onChange={handleChange}
                       className="w-full px-4 py-3 rounded-lg border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 text-slate-900 dark:text-white placeholder-slate-500 dark:placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-electric-blue-500"
-                      placeholder="John"
+                      placeholder="How can we help?"
                     />
                   </div>
+
                   <div>
                     <label className="block text-sm font-semibold text-slate-900 dark:text-white mb-2">
-                      Last Name
+                      Message
                     </label>
-                    <input
-                      type="text"
+                    <textarea
+                      name="message"
                       required
+                      rows={5}
+                      value={formData.message}
+                      onChange={handleChange}
                       className="w-full px-4 py-3 rounded-lg border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 text-slate-900 dark:text-white placeholder-slate-500 dark:placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-electric-blue-500"
-                      placeholder="Ado"
-                    />
+                      placeholder="Tell us about your project or inquiry..."
+                    ></textarea>
                   </div>
-                </div>
 
-                <div>
-                  <label className="block text-sm font-semibold text-slate-900 dark:text-white mb-2">
-                    Email
-                  </label>
-                  <input
-                    type="email"
-                    required
-                    className="w-full px-4 py-3 rounded-lg border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 text-slate-900 dark:text-white placeholder-slate-500 dark:placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-electric-blue-500"
-                    placeholder="ibrahim@example.com"
-                  />
-                </div>
+                  {status === 'error' && (
+                    <p className="text-sm font-semibold text-red-600 dark:text-red-400">
+                      {errorMessage}
+                    </p>
+                  )}
 
-                <div>
-                  <label className="block text-sm font-semibold text-slate-900 dark:text-white mb-2">
-                    Subject
-                  </label>
-                  <input
-                    type="text"
-                    required
-                    className="w-full px-4 py-3 rounded-lg border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 text-slate-900 dark:text-white placeholder-slate-500 dark:placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-electric-blue-500"
-                    placeholder="How can we help?"
-                  />
-                </div>
-
-                <div>
-                  <label className="block text-sm font-semibold text-slate-900 dark:text-white mb-2">
-                    Message
-                  </label>
-                  <textarea
-                    required
-                    rows={5}
-                    className="w-full px-4 py-3 rounded-lg border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 text-slate-900 dark:text-white placeholder-slate-500 dark:placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-electric-blue-500"
-                    placeholder="Tell us about your project or inquiry..."
-                  ></textarea>
-                </div>
-
-                <button
-                  type="submit"
-                  className="w-full px-6 py-3 bg-deep-blue-600 hover:bg-deep-blue-700 text-white font-semibold rounded-lg transition-colors"
-                >
-                  Send Message
-                </button>
-              </form>
+                  <button
+                    type="submit"
+                    disabled={status === 'loading'}
+                    className="w-full px-6 py-3 bg-deep-blue-600 hover:bg-deep-blue-700 disabled:opacity-60 disabled:cursor-not-allowed text-white font-semibold rounded-lg transition-colors"
+                  >
+                    {status === 'loading' ? 'Sending...' : 'Send Message'}
+                  </button>
+                </form>
+              )}
             </div>
           </motion.div>
         </div>
