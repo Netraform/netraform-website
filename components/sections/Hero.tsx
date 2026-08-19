@@ -77,7 +77,7 @@ export default function Hero() {
             className="text-lg md:text-xl text-slate-600 dark:text-slate-300 text-center max-w-2xl mx-auto mb-8 md:mb-12"
             variants={itemVariants}
           >
-            An innovation hub empowering the next generation through AI, software engineering, robotics, and digital transformation. Building intelligent solutions that matter.
+           Empowering the next generation through AI, software engineering, robotics, and digital transformation — building intelligent solutions that matter.
           </motion.p>
 
           {/* CTA Buttons */}

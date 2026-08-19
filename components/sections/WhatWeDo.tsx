@@ -70,8 +70,7 @@ export default function WhatWeDo() {
             What We Do
           </h2>
           <p className="text-lg text-slate-600 dark:text-slate-400">
-            We specialize in transforming complex challenges into innovative solutions through cutting-edge technology and creative problem-solving.
-          </p>
+          We specialize in transforming real-world challenges into innovative solutions through technology, research, and creative problem-solving        </p>
         </motion.div>
 
         {/* Services Grid */}
@@ -98,13 +97,15 @@ export default function WhatWeDo() {
                 <p className="text-slate-600 dark:text-slate-400 mb-4">
                   {service.description}
                 </p>
-                <a
+              {/**
+               *   <a
                   href="#"
                   className="inline-flex items-center gap-2 text-electric-blue-600 dark:text-electric-blue-400 font-semibold hover:gap-3 transition-all"
                 >
                   Learn More
                   <HiArrowRight className="w-4 h-4" />
                 </a>
+               */}
               </motion.div>
             );
           })}

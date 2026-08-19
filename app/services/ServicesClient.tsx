@@ -170,9 +170,9 @@ export default function ServicesClient() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8 }}
           >
-            <div className="inline-block px-4 py-1.5 rounded-full bg-electric-blue-500/10 border border-electric-blue-500/30 text-electric-blue-600 dark:text-electric-blue-400 text-xs md:text-sm font-semibold mb-6">
+             <div className="inline-block px-4 py-1.5 rounded-full bg-electric-blue-500/10 border border-electric-blue-500/30 text-electric-blue-600 dark:text-electric-blue-400 text-xs md:text-sm font-semibold mb-6">
               Services & Developer Tools
-            </div>
+            </div> 
             <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-slate-900 dark:text-white mb-6">
               Solutions Engineered for Excellence
             </h1>
@@ -202,7 +202,7 @@ export default function ServicesClient() {
               >
                 Technology Services
               </button>
-              <button
+              {/* <button
                 onClick={() => setFilter('products')}
                 className={`px-5 py-2.5 rounded-full text-sm font-semibold transition-all ${
                   filter === 'products'
@@ -211,7 +211,7 @@ export default function ServicesClient() {
                 }`}
               >
                 Developer Products & Tools
-              </button>
+              </button> */}
             </div>
           </motion.div>
         </div>

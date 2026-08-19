@@ -12,9 +12,9 @@ const navigation = [
   { name: 'Home', href: '/' },
   { name: 'About', href: '/about' },
   { name: 'Services & Products', href: '/services' },
-  { name: 'Innovation Hub', href: '/innovation-hub' },
+  //{ name: 'Innovation Hub', href: '/innovation-hub' },
   { name: 'Research & Projects', href: '/research' },
-  { name: 'Blog', href: '/blog' },
+ // { name: 'Blog', href: '/blog' },
   { name: 'Contact & FAQ', href: '/contact' },
 ];
 

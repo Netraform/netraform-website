@@ -151,7 +151,7 @@ export default function ResearchClient() {
         </div>
       </section>
 
-      {/* Publications */}
+      {/* Publications
       <section className="section-padding bg-slate-50 dark:bg-slate-900/50">
         <div className="container-content">
           <motion.div
@@ -206,10 +206,10 @@ export default function ResearchClient() {
             ))}
           </motion.div>
         </div>
-      </section>
+      </section> */}
 
       {/* Collaborations */}
-      <section className="section-padding">
+      {/* <section className="section-padding">
         <div className="container-content">
           <motion.div
             className="max-w-3xl mx-auto text-center mb-16"
@@ -253,7 +253,7 @@ export default function ResearchClient() {
             ))}
           </motion.div>
         </div>
-      </section>
+      </section> */}
 
       {/* CTA */}
       <section className="section-padding">

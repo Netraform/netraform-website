@@ -50,7 +50,7 @@ const projects = [
   },
 ];
 
-export default function FeaturedProjects() {
+ export default function FeaturedProjects() {
   return (
     <section className="section-padding">
       <div className="container-content">
@@ -107,6 +107,7 @@ export default function FeaturedProjects() {
             </motion.div>
           ))}
         </motion.div>
+        
 
         {/* CTA */}
         <motion.div

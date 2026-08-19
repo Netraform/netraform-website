@@ -7,32 +7,32 @@ import { HiArrowRight } from 'react-icons/hi2';
 import { FiGithub, FiLinkedin, FiTwitter, FiMail } from 'react-icons/fi';
 import { FaWhatsapp } from 'react-icons/fa';
 
-const footerLinks = {
-  company: [
-    { label: 'About Netraform', href: '/about' },
-    { label: 'Blog & News', href: '/blog' },
-    { label: 'Careers & Opportunities', href: '/careers' },
-    { label: 'Contact & Support', href: '/contact' },
-  ],
-  solutions: [
-    { label: 'AI & Machine Learning', href: '/services' },
-    { label: 'Software Engineering', href: '/services' },
-    { label: 'Robotics & Automation', href: '/services' },
-    { label: 'Cloud Infrastructure', href: '/services' },
-  ],
-  community: [
-    { label: 'Innovation Hub', href: '/innovation-hub' },
-    { label: 'Bootcamps & Courses', href: '/innovation-hub' },
-    { label: 'Hackathons & Contests', href: '/innovation-hub' },
-    { label: 'Fellowship Program', href: '/innovation-hub' },
-  ],
-  resources: [
-    { label: 'Research & Publications', href: '/research' },
-    { label: 'Project Case Studies', href: '/research' },
-    { label: 'Open-Source Tools', href: '/services' },
-    { label: 'Frequently Asked Questions', href: '/contact' },
-  ],
-};
+// const footerLinks = {
+//   company: [
+//     { label: 'About Netraform', href: '/about' },
+//     { label: 'Blog & News', href: '/blog' },
+//     { label: 'Careers & Opportunities', href: '/careers' },
+//     { label: 'Contact & Support', href: '/contact' },
+//   ],
+//   solutions: [
+//     { label: 'AI & Machine Learning', href: '/services' },
+//     { label: 'Software Engineering', href: '/services' },
+//     { label: 'Robotics & Automation', href: '/services' },
+//     { label: 'Cloud Infrastructure', href: '/services' },
+//   ],
+//   community: [
+//     { label: 'Innovation Hub', href: '/innovation-hub' },
+//     { label: 'Bootcamps & Courses', href: '/innovation-hub' },
+//     { label: 'Hackathons & Contests', href: '/innovation-hub' },
+//     { label: 'Fellowship Program', href: '/innovation-hub' },
+//   ],
+//   resources: [
+//     { label: 'Research & Publications', href: '/research' },
+//     { label: 'Project Case Studies', href: '/research' },
+//     { label: 'Open-Source Tools', href: '/services' },
+//     { label: 'Frequently Asked Questions', href: '/contact' },
+//   ],
+// };
 
 const socialLinks = [
   { icon: FiGithub, href: 'https://github.com', label: 'GitHub' },
@@ -141,7 +141,7 @@ export default function Footer() {
           </motion.div>
         </motion.div>
 
-        {/* Links Grid */}
+        {/* Links Grid
         <motion.div
           className="grid sm:grid-cols-2 lg:grid-cols-4 gap-8 mb-16 pb-16 border-b border-slate-200 dark:border-slate-800"
           variants={containerVariants}
@@ -168,7 +168,7 @@ export default function Footer() {
               </ul>
             </motion.div>
           ))}
-        </motion.div>
+        </motion.div> */}
 
         {/* Bottom Bar */}
         <motion.div
